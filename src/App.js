@@ -1,23 +1,46 @@
-import logo from './logo.svg';
+// Import necessary dependencies
+import React, { useState } from 'react';
 import './App.css';
 
+// Import the MeasurementsInput component
+import MeasurementsInput from './MeasurmentsInput.js';
+
 function App() {
+  // State to store the measurements
+  const [measurements, setMeasurements] = useState({
+    weight: '',
+    height: '',
+    chest: '',
+    waist: '',
+    hips: '',
+  });
+
+  // Function to handle changes in input fields
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setMeasurements((prevMeasurements) => ({
+      ...prevMeasurements,
+      [name]: value,
+    }));
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Do something with the measurements data (e.g., send it to the server)
+    console.log('Submitted Measurements:', measurements);
+    // You can add your logic here to handle the measurements data
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Body Measurements Tracker</h1>
+      {/* Render the MeasurementsInput component */}
+      <MeasurementsInput
+        measurements={measurements}
+        onInputChange={handleInputChange}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }
