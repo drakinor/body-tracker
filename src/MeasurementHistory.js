@@ -24,7 +24,7 @@ function MeasurementHistory() {
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={measurementsHistory}>
           <XAxis dataKey="timestamp" tickFormatter={(timestamp) => new Date(timestamp).toLocaleDateString()} />
-          <YAxis />
+          <YAxis label={{ value: 'Inches', angle: -90, position: 'insideLeft' }} />
           <Tooltip labelFormatter={(label) => new Date(label).toLocaleDateString()} />
           <Legend />
           <Line type="monotone" dataKey="waist" name="Waist" stroke="#8884d8" />

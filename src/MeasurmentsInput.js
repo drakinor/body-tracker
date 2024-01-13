@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import './MeasurementsInput.css';
 
 // Functional component definition
 function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
