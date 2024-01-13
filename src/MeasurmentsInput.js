@@ -1,6 +1,6 @@
 // MeasurmentsInput.js
 import React, { useState } from 'react';
-import { View, TextInput, Buttom} from 'react';
+import { View, TextInput, Button} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function MeasurementsInput() {

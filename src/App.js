@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 // Import the MeasurementsInput component
-import MeasurementsInput from './MeasurmentsInput.js';
+import MeasurementsInput from './MeasurmentsInput';
 
 function App() {
   // State to store the measurements
