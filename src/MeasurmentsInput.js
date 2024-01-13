@@ -1,17 +1,30 @@
-// MeasurmentsInput.js
-import React, { useState } from 'react';
-import { View, TextInput, Button} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-function MeasurementsInput() {
+// Functional component definition
+function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
+  // Initialize state variables
   const [waist, setWaist] = useState('');
   const [biceps, setBiceps] = useState('');
   const [thighs, setThighs] = useState('');
   const [bust, setBust] = useState('');
   const [hips, setHips] = useState('');
   const [dateTime, setDateTime] = useState('');
-  // ... other measurements state variables
+  const [submissionMessage, setSubmissionMessage] = useState(''); // Declare setSubmissionMessage
 
+  // Load measurements from local storage on component mount
+  useEffect(() => {
+    const storedMeasurements = JSON.parse(localStorage.getItem('measurements')) || {};
+    setWaist(storedMeasurements.waist || '');
+    setBiceps(storedMeasurements.biceps || '');
+    setThighs(storedMeasurements.thighs || '');
+    setBust(storedMeasurements.bust || '');
+    setHips(storedMeasurements.hips || '');
+    // Ensure the timestamp is set in a readable format
+    setDateTime(new Date().toLocaleString());
+  }, []);
+
+  // Event handlers for input changes
   const handleWaistChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
       setWaist(event.target.value);
@@ -42,17 +55,39 @@ function MeasurementsInput() {
     }
   };
 
+  // Submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
-    const currentDateTime = new Date().toLocaleString();
+    const currentDateTime = new Date().toISOString(); // Use ISO format for timestamp
     setDateTime(currentDateTime);
-    // Now, you can store wasit, biceps, thighs, bust, and hips ot your backend or any storage mechanism
-  }
-  // ... handlers for other measurements
-
+  
+    // Create a new measurement object with the correct timestamp
+    const newMeasurement = {
+      timestamp: currentDateTime,
+      waist,
+      biceps,
+      thighs,
+      bust,
+      hips,
+    };
+  
+    // Retrieve existing measurements from localStorage
+    const storedMeasurements = JSON.parse(localStorage.getItem('measurements')) || [];
+  
+    // Save the new measurement to the array
+    storedMeasurements.push(newMeasurement);
+  
+    // Save the updated array back to localStorage
+    localStorage.setItem('measurements', JSON.stringify(storedMeasurements));
+  
+    // Update the submission message
+    setSubmissionMessage('Measurements submitted successfully!');
+  };
+  
   return (
     <div>
       <h2>Measurements Input</h2>
+      <h3>Please input in inches</h3>
       <form onSubmit={handleSubmit}>
         <label>Waist:</label>
         <input type="text" value={waist} onChange={handleWaistChange} />
@@ -74,12 +109,21 @@ function MeasurementsInput() {
         <input type='text' value={hips} onChange={handleHipsChange} />
         <br />
 
-        <button type='submit'>Submit</button>
-
         {/* ... other measurement input fields */}
+        <button type="submit">Submit</button>
+
+        {/* Display submission message */}
+        {submissionMessage && <p>{submissionMessage}</p>}
       </form>
     </div>
   );
 }
+
+// Add prop types to ensure 'measurements' prop is defined
+MeasurementsInput.propTypes = {
+  measurements: PropTypes.object.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default MeasurementsInput;
