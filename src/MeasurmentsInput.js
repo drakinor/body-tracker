@@ -13,6 +13,14 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
   const [dateTime, setDateTime] = useState('');
   const [submissionMessage, setSubmissionMessage] = useState(''); // Declare setSubmissionMessage
 
+  // Adding optional target measurements variables
+  const [targetWaist, setTargetWaist] = useState('');
+  const [targetBiceps, setTargetBiceps] = useState('');
+  const [targetThighs, setTargetThighs] = useState('');
+  const [targetBust, setTargetBust] = useState('');
+  const [tragetHips, setTargetHips] = useState('');
+
+
   // Load measurements from local storage on component mount
   useEffect(() => {
     const storedMeasurements = JSON.parse(localStorage.getItem('measurements')) || {};
@@ -56,6 +64,36 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
     }
   };
 
+  const handleTargetWaistChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setTargetWaist(event.target.value);
+    }
+  };
+
+  const handleTargetBicepsChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setTargetBiceps(event.target.value);
+    }
+  };
+
+  const handleTargetThighsChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setTargetThighs(event.target.value);
+    }
+  };
+
+  const handleTargetBustChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setTargetBust(event.target.value);
+    }
+  };
+
+  const handleTargetHipsChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setTargetHips(event.target.value);
+    }
+  };
+
   // Submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,10 +104,15 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
     const newMeasurement = {
       timestamp: currentDateTime,
       waist,
+      targetWaist,
       biceps,
+      targetBiceps,
       thighs,
+      targetThighs,
       bust,
+      targetBust,
       hips,
+      tragetHips,
     };
   
     // Retrieve existing measurements from localStorage
@@ -108,6 +151,27 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
 
         <label>Hips:</label>
         <input type='text' value={hips} onChange={handleHipsChange} />
+        <br />
+
+         {/* Optional target input */}
+         <label>Target Waist:</label>
+        <input type="text" value={targetWaist} onChange={handleTargetWaistChange} />
+        <br />
+         
+         <label>Target Biceps:</label>
+        <input type="text" value={targetBiceps} onChange={handleTargetBicepsChange} />
+        <br />
+         
+         <label>Target Thighs:</label>
+        <input type="text" value={targetThighs} onChange={handleTargetThighsChange} />
+        <br />
+         
+         <label>Target Bust:</label>
+        <input type="text" value={targetBust} onChange={handleTargetBustChange} />
+        <br />
+         
+         <label>Target Hips:</label>
+        <input type="text" value={tragetHips} onChange={handleTargetHipsChange} />
         <br />
 
         {/* ... other measurement input fields */}
