@@ -41,25 +41,23 @@ function MeasurementHistory() {
           />
           <YAxis label={{ value: 'Inches', angle: -90, position: 'insideLeft' }} />
           <Tooltip
-            labelFormatter={(label) =>
-              new Date(label).toLocaleDateString()
-            }
+            labelFormatter={(label) => new Date(label).toLocaleDateString()}
             formatter={(value, name, props) => {
-              const isMeasurement = ['waist', 'biceps', 'thighs', 'bust', 'hips'].includes(
-                name
-              );
+              const isMeasurement = ['waist', 'biceps', 'thighs', 'bust', 'hips', 'weight'].includes(name);
 
               if (isMeasurement) {
                 const targetName = `target${name.charAt(0).toUpperCase() + name.slice(1)}`;
                 const targetValue = props.payload[targetName];
-                return `${name}: ${value} inches`;
+                const unit = name === 'weight' ? 'lbs' : 'inches';
+
+                return `${value} ${unit}`;
               }
 
-              return `${name}: ${value} inches`;
+              return value;
             }}
           />
           <Legend formatter={(value, entry) => {
-            const isMeasurement = ['Waist', 'Biceps', 'Thighs', 'Bust', 'Hips'].includes(
+            const isMeasurement = ['Waist', 'Biceps', 'Thighs', 'Bust', 'Hips', 'Weight'].includes(
               value
             );
             return isMeasurement ? `${value} (Actual)` : value;
@@ -94,6 +92,12 @@ function MeasurementHistory() {
             name="Hips"
             stroke="#ff0000"
           />
+          <Line
+            type="monotone"
+            dataKey="weight"
+            name="Weight"
+            stroke="#F698BD"
+          />
         </LineChart>
         </ResponsiveContainer>
       <div style={{ marginTop: 20, marginLeft: 20 }}>
@@ -105,6 +109,7 @@ function MeasurementHistory() {
             {measurement.targetThighs && <p>Thighs Target: {measurement.targetThighs}</p>}
             {measurement.targetBust && <p>Bust Target: {measurement.targetBust}</p>}
             {measurement.targetHips && <p>Hips Target: {measurement.targetHips}</p>}
+            {measurement.targetWeight && <p>Weight Target: {measurement.targetWeight}</p>}
           </div>
         ))}
       </div>

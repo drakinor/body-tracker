@@ -10,6 +10,7 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
   const [thighs, setThighs] = useState('');
   const [bust, setBust] = useState('');
   const [hips, setHips] = useState('');
+  const [weight, setWeight] = useState('');
   const [dateTime, setDateTime] = useState('');
   const [submissionMessage, setSubmissionMessage] = useState(''); // Declare setSubmissionMessage
 
@@ -18,7 +19,9 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
   const [targetBiceps, setTargetBiceps] = useState('');
   const [targetThighs, setTargetThighs] = useState('');
   const [targetBust, setTargetBust] = useState('');
-  const [tragetHips, setTargetHips] = useState('');
+  const [targetHips, setTargetHips] = useState('');
+  const [targetWeight, setTargetWeight] = useState('');
+
 
 
   // Load measurements from local storage on component mount
@@ -29,6 +32,7 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
     setThighs(storedMeasurements.thighs || '');
     setBust(storedMeasurements.bust || '');
     setHips(storedMeasurements.hips || '');
+    setWeight(storedMeasurements.weight || '');
     // Ensure the timestamp is set in a readable format
     setDateTime(new Date().toLocaleString());
   }, []);
@@ -63,6 +67,11 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
       setHips(event.target.value);
     }
   };
+  const handleWeightChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setWeight(event.target.value);
+    }
+  };
 
   const handleTargetWaistChange = (event) => {
     if (/^\d*\.?\d*$/.test(event.target.value)) {
@@ -94,6 +103,12 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
     }
   };
 
+  const handleTargetWeightChange = (event) => {
+    if (/^\d*\.?\d*$/.test(event.target.value)) {
+      setTargetWeight(event.target.value);
+    }
+  };
+
   // Submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -112,8 +127,11 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
       bust,
       targetBust,
       hips,
-      tragetHips,
+      targetHips,
+      weight,
+      targetWeight, // Corrected variable name
     };
+    
   
     // Retrieve existing measurements from localStorage
     const storedMeasurements = JSON.parse(localStorage.getItem('measurements')) || [];
@@ -129,10 +147,13 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
   };
   
   return (
-    <div>
-      <h2>Measurements Input</h2>
-      <h3>Please input in inches</h3>
-      <form onSubmit={handleSubmit}>
+    <div className="measurement-container">
+      <div className="column">
+        <h2>Measurements Input</h2>
+        
+        <form onSubmit={handleSubmit}>
+          {/* Measurement inputs */}
+          <div className="measurement-input">
         <label>Waist:</label>
         <input type="text" value={waist} onChange={handleWaistChange} />
         <br />
@@ -153,6 +174,18 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
         <input type='text' value={hips} onChange={handleHipsChange} />
         <br />
 
+        <label>Weight:</label>
+        <input type='text' value={weight} onChange={handleWeightChange} />
+        <br />
+        </div>
+        </form>
+      </div>
+
+      <div className="column">
+        <h2>Targets</h2>
+        <form onSubmit={handleSubmit}>
+          {/* Target inputs */}
+          <div className="measurement-input">
          {/* Optional target input */}
          <label>Target Waist:</label>
         <input type="text" value={targetWaist} onChange={handleTargetWaistChange} />
@@ -170,16 +203,21 @@ function MeasurementsInput({ measurements, onInputChange, onSubmit }) {
         <input type="text" value={targetBust} onChange={handleTargetBustChange} />
         <br />
          
-         <label>Target Hips:</label>
-        <input type="text" value={tragetHips} onChange={handleTargetHipsChange} />
+        <label>Target Hips:</label>
+        <input type="text" value={targetHips} onChange={handleTargetHipsChange} />
         <br />
 
+        <label>Target Weight:</label>
+        <input type="text" value={targetWeight} onChange={handleTargetWeightChange} />
+        <br />
+        </div>
         {/* ... other measurement input fields */}
         <button type="submit">Submit</button>
 
         {/* Display submission message */}
         {submissionMessage && <p>{submissionMessage}</p>}
       </form>
+      </div>
     </div>
   );
 }

@@ -39,7 +39,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1>Body Measurements Tracker</h1>
+        <h1>Welcome to your Body Measurement Tracker!</h1>
+        <h3>Please input in inches</h3>
         <nav>
           <ul>
             <li>
